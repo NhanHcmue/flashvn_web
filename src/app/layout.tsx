@@ -3,12 +3,13 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Breadcrumb from "@/components/Breadcrumb";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "FLASH VN",
-  description: "Building Future-Ready Communities",
+  description: "Lum",
 };
 
 export default function RootLayout({
@@ -22,6 +23,7 @@ export default function RootLayout({
         <Navbar />
         <Breadcrumb />
         {children}
+        <Footer />
       </body>
     </html>
   );

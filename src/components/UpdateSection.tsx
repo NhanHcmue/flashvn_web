@@ -1,79 +1,65 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const updates = [
   {
     title: 'Latest program',
-    summary: 'Summary',
-    link: '#'
+    summary:
+      '[Workshop] Enhancing Digital competence with the topic of "Applications of AI in scientific research" in HCMC University of Education on Apr 19 2025',
+    link: '/what-we-do/capacity-training',
+    image: '/images/updates/latest-program.jpg',
+    buttonText: 'Read more',
   },
   {
-    title: 'News',
-    summary: 'Summary',
-    link: '#'
+    title: 'Winning Youth Empowerment Fund',
+    summary:
+      'The representative of FLASH VN proudly secured the funding of Youth Empowerment Fund by European Union and Global Youth Mobilization',
+    link: '#',
+    image: '/images/updates/youth-empowerment.jpg',
+    buttonText: 'Read more',
   },
   {
-    title: 'Blog',
-    summary: 'Summary',
-    link: '#'
-  }
-];
-
-const socialLinks = [
-  {
-    name: 'TikTok',
-    href: 'https://www.tiktok.com/@flashvn'
+    title: 'Newsletter',
+    summary: 'Every month, the newsletters are regularly updated.',
+    link: 'https://drive.google.com/drive/folders/1MOS8_wekEpWQ7ujreZwyzOUGcxFykV2V?usp=sharing',
+    image: '/images/updates/newsletter.jpg',
+    buttonText: 'Download',
   },
-  {
-    name: 'Facebook',
-    href: 'https://www.facebook.com/duanflashvn'
-  },
-  {
-    name: 'Youtube',
-    href: 'https://www.youtube.com/@duanflashvn'
-  },
-  {
-    name: 'LinkedIn',
-    href: '#'
-  }
 ];
 
 export default function UpdateSection() {
   return (
-    <div className="space-y-12">
-      <div>
-        <h2 className="text-2xl font-bold text-black mb-8">Stay update!</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {updates.map((item, index) => (
-            <div 
-              key={index}
-              className="border border-black rounded-lg p-6 space-y-4"
-            >
-              <h3 className="font-semibold text-lg text-black">{item.title}</h3>
-              <p className="text-black">{item.summary}</p>
-              <Link 
-                href={item.link}
-                className="inline-block border border-gray-900 rounded-full px-6 py-2 text-sm text-black hover:bg-gray-900 hover:text-white transition-colors"
+    <section className="bg-white py-10">
+      <div className="container mx-auto px-4 space-y-12">
+        <div>
+          <h2 className="text-2xl font-bold text-black mb-8">Stay update!</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {updates.map((item, index) => (
+              <div
+                key={index}
+                className="p-4 space-y-4 bg-white"
               >
-                Find out more
-              </Link>
-            </div>
-          ))}
+                <div className="relative w-full h-40">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover rounded-lg border-3 border-black"
+                  />
+                </div>
+                <h3 className="font-semibold text-lg text-black">{item.title}</h3>
+                <p className="text-sm text-gray-700">{item.summary}</p>
+                <Link
+                  href={item.link}
+                  className="inline-block border border-gray-900 rounded-full px-6 py-2 text-sm text-black hover:bg-[#FFCF24] transition-colors"
+                >
+                  {item.buttonText}
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-      <div>
-        <h2 className="text-2xl font-bold text-black mb-6">Follow us on social media</h2>
-        <div className="flex flex-wrap gap-4">
-          {socialLinks.map((social, index) => (
-            <Link
-              key={index}
-              href={social.href}
-              className="px-6 py-2 border border-black rounded-full text-black hover:border-gray-900 transition-colors"
-            >
-              {social.name}
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
+    </section>
   );
-} 
+}

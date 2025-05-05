@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import '@/styles/globals.css'
+
 
 export default function HeroSection() {
   const banners = [
     {
       image: '/images/banner/banner1.jpg',
-      alt: 'Students collaborating',
+      alt: 'Group of students and educators',
     },
     {
       image: '/images/banner/banner2.jpg',
@@ -30,43 +32,56 @@ export default function HeroSection() {
   }, [banners.length]);
 
   return (
-    <div className="relative w-full min-h-[600px] bg-white">
+    <div className="relative w-full bg-white">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-8 items-center py-10">
+        <div className="grid md:grid-cols-2 gap-8 items-center py-8">
           <div className="space-y-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-black">
-              Building a{' '}
-              <span className="text-blue-600">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-500">
+              Building a{' '}<br />
+              <span className="text-black bg-[#FFCF24] px-2 rounded-2xl">
                 #future-ready
-              </span>
-              {' '}community
+              </span>{' '}
+              community
             </h1>
-            <p className="text-lg text-black max-w-lg">
-              By providing digital-capacity training and innovative solution for youth and educators
+            <p className="text-lg text-gray-700 max-w-lg">
+              By providing digital-capacity training and innovative solutions for youth and educators
             </p>
             <div>
               <Link
                 href="/what-we-do"
-                className="inline-block px-8 py-3 border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white transition-colors rounded-full text-lg font-medium"
+                className="inline-block px-8 py-3 border-2 border-gray-900 text-gray-900 hover:bg-[#FFCF24] hover:text-black transition-colors rounded-full text-lg font-medium"
               >
                 Find out more
               </Link>
             </div>
           </div>
-          <div className="relative h-[400px] w-full">
-            <Image
-              src={banners[currentIndex].image}
-              alt={banners[currentIndex].alt}
-              fill
-              className="object-cover rounded-lg"
-              priority
-            />
-            <div className="absolute bottom-4 right-4 flex space-x-2">
+          <div className="w-full">
+            <div className="relative h-[400px] w-full">
+              <Image
+                src={banners[currentIndex].image}
+                alt={banners[currentIndex].alt}
+                fill
+                className="object-cover border-2 border-black rounded-lg shadow-lg"
+                priority
+              />
+              <img
+                src="/images/icons/icon2.png"
+                alt="Floating circle 1"
+                className="absolute -top-15 -right-15 w-[150px] h-[150px] rounded-full animate-bounce-move"
+              />
+
+              <img
+                src="/images/icons/icon4.png"
+                alt="Floating circle 2"
+                className="absolute -bottom-10 -left-10 w-[70px] h-[70px] rounded-full animate-float-diagonal"
+              />
+            </div>
+            <div className="mt-4 flex justify-center space-x-2">
               {banners.map((_, index) => (
                 <div
                   key={index}
-                  className={`w-2 h-2 rounded-full ${
-                    index === currentIndex ? 'bg-white' : 'bg-white opacity-50'
+                  className={`h-3 rounded-full transition-all duration-300 ${
+                    index === currentIndex ? 'w-15 bg-gray-400' : 'w-3 bg-gray-400'
                   }`}
                 ></div>
               ))}

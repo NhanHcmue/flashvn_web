@@ -5,6 +5,11 @@ import { usePathname } from 'next/navigation';
 
 export default function Breadcrumb() {
   const pathname = usePathname();
+
+  // Danh sách các path muốn ẩn breadcrumb
+  const hiddenPaths = ["home","/what-we-do/innovative-solution", "/what-we-do/mil-play"];
+  if (hiddenPaths.includes(pathname)) return null;
+
   const pathSegments = pathname.split('/').filter(Boolean);
   const breadcrumbItems = pathSegments.map((segment, index) => {
     const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
@@ -40,4 +45,4 @@ export default function Breadcrumb() {
       </div>
     </div>
   );
-} 
+}

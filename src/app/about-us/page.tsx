@@ -1,6 +1,4 @@
 import StaticHeroSection from '@/components/StaticHeroSection';
-import Section from '@/components/Section';
-import Footer from '@/components/Footer';
 import JourneySection from '@/components/JourneySection';
 import TeamSection from '@/components/TeamSection';
 
@@ -11,17 +9,12 @@ export const metadata = {
 
 export default function AboutUs() {
   return (
-    <main className="min-h-screen bg-white">
+    <main className='bg-white'>
       <StaticHeroSection />
       <div className="h-0.5 bg-black my-6" />
-      <Section title="">
-        <JourneySection />
-      </Section>
+      <JourneySection />
       <div className="h-0.5 bg-black my-6" />
-      <Section title="">
-        <TeamSection />
-      </Section>
-      <Footer />
+      <TeamSection />
     </main>
   );
 }
