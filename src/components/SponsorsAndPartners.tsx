@@ -1,6 +1,17 @@
+import Image from 'next/image';
+
 export default function SponsorsAndPartners() {
   return (
-    <section className="bg-white py-10">
+    <section className="relative bg-white py-10">
+      {/* Icon ở góc trên bên phải */}
+      <Image
+        src="/images/icons/icon1.png"
+        alt="Decorative Icon"
+        width={200}
+        height={200}
+        className="absolute -top-15 -right-15 z-10 animate-bounce-move"
+      />
+
       <div className="container mx-auto px-4 space-y-16">
         <div>
           <h3 className="text-2xl font-bold text-gray-900 mb-8">

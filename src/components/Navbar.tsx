@@ -26,6 +26,7 @@ export default function Navbar() {
               <Link
                 key={href}
                 href={href}
+                prefetch={false}
                 className={`text-sm ${
                   pathname === href
                     ? 'text-gray-900'
@@ -39,6 +40,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-2">
             <Link
               href="/en"
+              prefetch={false}
               className={`text-sm ${
                 pathname.startsWith('/en')
                   ? 'text-gray-900'
@@ -50,6 +52,7 @@ export default function Navbar() {
             <span className="text-gray-300">|</span>
             <Link
               href="/vi"
+              prefetch={false}
               className={`text-sm ${
                 pathname.startsWith('/vi')
                   ? 'text-gray-900'

@@ -70,27 +70,35 @@ export default function JourneySection() {
     );
   };
 
-  useEffect(() => {
-    const calculateLineHeight = () => {
-      if (containerRef.current) {
-        const markers = containerRef.current.querySelectorAll('.step-marker');
-        const markersArray = Array.from(markers) as HTMLElement[];
-        if (markersArray.length >= 1) {
-          const first = markersArray[0];
-          const last = markersArray.length > 1 ? markersArray[markersArray.length - 2] : first;
+useEffect(() => {
+  const calculateLineHeight = () => {
+    if (containerRef.current) {
+      const markers = containerRef.current.querySelectorAll('.step-marker');
+      const markersArray = Array.from(markers) as HTMLElement[];
+      
+      if (markersArray.length > 0) {
+        const first = markersArray[0];
+        const last = markersArray[markersArray.length - 1];
+        
+        // Kiểm tra nếu phần tử đầu tiên và cuối cùng có thể truy cập
+        if (first && last) {
           const top = first.offsetTop + first.offsetHeight / 2;
-          const bottom = last.offsetTop + last.offsetHeight;
+          const bottom = last.offsetTop + last.offsetHeight / 2;
+          
           if (top !== bottom) {
-            setLineHeight(bottom - top);
+            setLineHeight(bottom - top); // Cập nhật chiều cao đường
           }
         }
       }
-    };
+    }
+  };
 
-    setTimeout(() => calculateLineHeight(), 0);
-    window.addEventListener('resize', calculateLineHeight);
-    return () => window.removeEventListener('resize', calculateLineHeight);
-  }, [expandedIndices]);
+  setTimeout(() => calculateLineHeight(), 100); // Đảm bảo tính toán sau khi các phần tử được render
+  window.addEventListener('resize', calculateLineHeight);
+
+  return () => window.removeEventListener('resize', calculateLineHeight);
+}, [expandedIndices]);
+
 
   return (
     <div className="max-w-6xl mx-auto">

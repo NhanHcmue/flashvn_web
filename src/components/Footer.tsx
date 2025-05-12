@@ -14,8 +14,9 @@ export default function Footer() {
             <Image
               src="/images/logo.png"
               alt="FLASH VN Logo"
-              width={200}
-              height={200}
+              width={120}
+              height={120}
+              className="w-32 h-auto md:w-48"
             />
           </div>
           <div className="flex flex-col justify-center items-start space-y-6 text-base md:text-lg text-gray-700 text-left">
