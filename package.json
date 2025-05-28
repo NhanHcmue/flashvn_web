@@ -9,11 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^39.0.2",
+    "@ckeditor/ckeditor5-react": "^9.5.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@google-cloud/translate": "^9.0.1",
     "axios": "^1.9.0",
+    "dayjs": "^1.11.13",
     "i18next": "^25.0.1",
     "next": "15.3.0",
     "next-i18next": "^15.4.2",
@@ -21,7 +24,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^15.5.1",
-    "react-quill": "^2.0.0",
+    "react-quill": "^0.0.2",
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1"
   },

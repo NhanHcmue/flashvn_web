@@ -1,36 +1,58 @@
-"use client";
-
+'use client';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function ProgramModal({ program, onClose }: { 
-  program: { title: string; createdAt: string; link: string; content?: string; image?: string } | null; 
-  onClose: () => void 
-}) {
-  if (!program) return null;
+export interface PostType {
+  _id?: string;
+  title: string;
+  content: string;
+  imageUrl?: string;
+  category: 'educator' | 'youth' | 'digcomp' | 'other';
+  bool?: boolean;
+  eventDate?: Date;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
-  // Hàm xử lý khi click bên ngoài modal content
+function formatDate(dateString?: string) {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth()+1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+function ProgramModal({ post, onClose }: { post: PostType | null; onClose: () => void }) {
+  if (!post) return null;
+
   const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
+  // Xử lý lấy đúng URL ảnh
+  const imageSrc = post.imageUrl
+    ? post.imageUrl.startsWith('http') ? post.imageUrl : `http://localhost:5000${post.imageUrl}`
+    : null;
+
   return (
     <div
-      onClick={handleOutsideClick} // Áp dụng sự kiện click bên ngoài
+      onClick={handleOutsideClick}
       className="fixed inset-0 bg-white text-black flex items-center justify-center z-50 p-4"
     >
       <div
         className="bg-white rounded-lg p-6 max-w-6xl border w-full max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()} // Ngăn chặn click bên trong lan ra ngoài
+        onClick={e => e.stopPropagation()}
       >
         <div className="flex justify-between items-start mb-4">
-          <h3 className="text-2xl font-bold">{program.title}</h3>
+          <h3 className="text-2xl font-bold">{post.title}</h3>
           <button 
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
+            aria-label="Close modal"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -39,17 +61,17 @@ function ProgramModal({ program, onClose }: {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            {program.content && (
-              <div className="whitespace-pre-line text-gray-700">
-                {program.content}
-              </div>
-            )}
+           <div 
+              className="text-gray-700" 
+              dangerouslySetInnerHTML={{ __html: post.content }} 
+            />
+
           </div>
-          {program.image && (
+          {imageSrc && (
             <div>
               <Image 
-                src={program.image}
-                alt={program.title}
+                src={imageSrc}
+                alt={post.title}
                 width={600}
                 height={400}
                 className="rounded-lg object-cover w-full h-auto"
@@ -62,36 +84,22 @@ function ProgramModal({ program, onClose }: {
   );
 }
 
-
-
-function ProgramColumn({ 
-  title, 
-  programs 
-}: { 
-  title: string; 
-  programs: { title: string; createdAt: string; link: string; content?: string; image?: string }[] 
-}) {
-  const [selectedProgram, setSelectedProgram] = useState<{
-    title: string; 
-    createdAt: string; 
-    link: string;
-    content?: string;
-    image?: string;
-  } | null>(null);
+function ProgramColumn({ title, posts }: { title: string; posts: PostType[] }) {
+  const [selectedPost, setSelectedPost] = useState<PostType | null>(null);
 
   return (
     <div>
       <h3 className="text-xl font-bold text-black mb-4 md:hidden">{title}</h3>
       <div className="space-y-4">
-        {programs.map((program, index) => (
-          <div key={index} className="border border-gray-300 rounded-lg p-4 bg-white shadow-sm">
-            <h4 className="text-lg font-bold text-black mb-2">{program.title}</h4>
+        {posts.map((post) => (
+          <div key={post._id || post.title} className="border border-gray-300 rounded-lg p-4 bg-white shadow-sm">
+            <h4 className="text-lg font-bold text-black mb-2">{post.title}</h4>
             <p className="text-sm text-gray-600 mb-4">
-              Date: {new Date(program.createdAt).toISOString().split('T')[0]}
+              Date: {formatDate(post.eventDate)}<br />
             </p>
 
             <button
-              onClick={() => setSelectedProgram(program)}
+              onClick={() => setSelectedPost(post)}
               className="inline-block border border-black rounded-full px-4 py-2 text-sm text-black hover:bg-[#FFCF24] hover:border-2 transition-colors"
             >
               Read more
@@ -101,33 +109,33 @@ function ProgramColumn({
       </div>
       
       <ProgramModal 
-        program={selectedProgram} 
-        onClose={() => setSelectedProgram(null)} 
+        post={selectedPost} 
+        onClose={() => setSelectedPost(null)} 
       />
     </div>
   );
 }
 
 export default function ProgramsSection() {
-  const [educatorPrograms, setEducatorPrograms] = useState([]);
-  const [youthPrograms, setYouthPrograms] = useState([]);
-  const [digcompPrograms, setDigcompPrograms] = useState([]);
+  const [educatorPosts, setEducatorPosts] = useState<PostType[]>([]);
+  const [youthPosts, setYouthPosts] = useState<PostType[]>([]);
+  const [digcompPosts, setDigcompPosts] = useState<PostType[]>([]);
 
   useEffect(() => {
-    const fetchPrograms = async () => {
+    const fetchPosts = async () => {
       try {
         const res = await axios.get('http://localhost:5000/api/posts');
-        const posts = res.data;
+        const posts: PostType[] = res.data;
 
-        setEducatorPrograms(posts.filter((p: any) => p.category === 'educator'));
-        setYouthPrograms(posts.filter((p: any) => p.category === 'youth'));
-        setDigcompPrograms(posts.filter((p: any) => p.category === 'digcomp'));
+        setEducatorPosts(posts.filter(p => p.category === 'educator'));
+        setYouthPosts(posts.filter(p => p.category === 'youth'));
+        setDigcompPosts(posts.filter(p => p.category === 'digcomp'));
       } catch (error) {
-        console.error('Lỗi khi lấy dữ liệu chương trình:', error);
+        console.error('Error fetching posts:', error);
       }
     };
 
-    fetchPrograms();
+    fetchPosts();
   }, []);
 
   return (
@@ -177,9 +185,9 @@ export default function ProgramsSection() {
 
       <section className="container mx-auto px-4 pb-5">
         <div className="grid md:grid-cols-3 gap-8 mt-12 space-y-8 md:space-y-0">
-          <ProgramColumn title="FLASH4 Educator" programs={educatorPrograms} />
-          <ProgramColumn title="FLASH4 Youth" programs={youthPrograms} />
-          <ProgramColumn title="FLASH4 Digcomp" programs={digcompPrograms} />
+          <ProgramColumn title="FLASH4 Educator" posts={educatorPosts} />
+          <ProgramColumn title="FLASH4 Youth" posts={youthPosts} />
+          <ProgramColumn title="FLASH4 Digcomp" posts={digcompPosts} />
         </div>
       </section>
     </>

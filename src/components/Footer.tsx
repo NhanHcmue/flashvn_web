@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faTiktok, faYoutube, faSquareWhatsapp } from '@fortawesome/free-brands-svg-icons';

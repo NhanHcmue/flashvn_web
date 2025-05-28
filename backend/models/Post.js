@@ -1,16 +1,16 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 
-const postSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  content: { type: String, required: true },
-  image: { type: String},
+const postSchema = new Schema({
+  title: String,
+  content: String,
+  imageUrl: String,
   category: {
     type: String,
-    enum: ['educator', 'youth', 'digcomp', 'other'],
-    required: true
+    enum: ['educator', 'youth', 'digcomp', 'other'],  // Chỉ cho phép 4 giá trị này
+    required: true, // nếu bắt buộc phải có category
   },
-  bool: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now },
-}, { collection: 'post' });
+  bool: Boolean,
+  eventDate: Date,
+}, { timestamps: true });
 
-export default mongoose.model('Post', postSchema);
+export default model('Post', postSchema);
